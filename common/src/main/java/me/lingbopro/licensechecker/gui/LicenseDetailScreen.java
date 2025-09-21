@@ -39,5 +39,7 @@ public class LicenseDetailScreen extends ListScreen {
                 index++;
             }
         }
+
+        this.draw();
     }
 }

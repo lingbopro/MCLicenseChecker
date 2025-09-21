@@ -16,6 +16,7 @@ public class LicenseListScreen extends ListScreen {
 
     public LicenseListScreen(Screen parent) {
         super(parent, Component.translatable("config.license_checker.title"));
+
     }
 
     @Override
@@ -39,5 +40,7 @@ public class LicenseListScreen extends ListScreen {
                 index++;
             }
         }
+
+        this.draw();
     }
 }
