@@ -13,12 +13,14 @@ import java.util.Map;
 
 import static me.lingbopro.licensechecker.LicenseChecker.LOGGER;
 
-public class LicenseListScreen extends Screen {
+public class LicenseDetailScreen extends Screen {
     private final Screen parent;
+    private final String licenseName;
 
-    public LicenseListScreen(Screen parent) {
-        super(Component.translatable("config.license_checker.title"));
+    protected LicenseDetailScreen(Screen parent, String licenseName) {
+        super(Component.literal(licenseName));
         this.parent = parent;
+        this.licenseName = licenseName;
     }
 
     @Override
@@ -29,20 +31,19 @@ public class LicenseListScreen extends Screen {
 
         this.addRenderableWidget(backButton);
 
-        // 列出许可证
-        LOGGER.info("Start listing licenses");
+        // 列出模组
+        LOGGER.info("Start listing mods");
         final Map<String, Collection<Mod>> licenses = LicenseUtils.getLicenses();
+        // filter mods with specific licenses
+        Collection<Mod> mods = licenses.get(licenseName);
         {
             int index = 0;
-            for (Map.Entry<String, Collection<Mod>> entry : licenses.entrySet()) {
-                String licenseName = entry.getKey();
-
-                Button licenseButton = Button.builder(Component.literal(licenseName), button -> {
-                    LOGGER.info("Opening license detail screen for " + licenseName);
-                    Minecraft.getInstance().setScreen(new LicenseDetailScreen(this, licenseName));
+            for (Mod mod : mods) {
+                Button modButton = Button.builder(Component.literal(mod.getName()), button -> {
+                    // TODO
                 }).bounds(15, 50 + index * 20, this.width - 30, 20).build();
 
-                this.addRenderableWidget(licenseButton);
+                this.addRenderableWidget(modButton);
                 index++;
             }
         }
